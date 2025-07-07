@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Emissão no Ciclo de Vida</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 1rem 0; }
+        .container { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        h1 { color: #0056b3; text-align: center; }
+        form { display: flex; flex-direction: column; gap: 1rem; }
+        label { font-weight: bold; }
+        input, select { padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+        button { background-color: #0056b3; color: white; padding: 0.75rem; border: none; border-radius: 4px; font-size: 1.1rem; cursor: pointer; transition: background-color 0.3s; }
+        button:hover { background-color: #004494; }
+        .resultado { margin-top: 1.5rem; padding: 1rem; background-color: #e6f7ff; border: 1px solid #91d5ff; border-radius: 4px; text-align: left; font-size: 1.1rem; }
+        .resultado h3 { margin-top: 0; color: #0056b3; }
+        .resultado hr { border: 0; border-top: 1px solid #91d5ff; margin: 0.5rem 0; }
+        .erro { margin-top: 1.5rem; padding: 1rem; background-color: #fff1f0; border: 1px solid #ffccc7; border-radius: 4px; text-align: center; font-size: 1.2rem; font-weight: bold; color: #cf1322;}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Calculadora de Emissão no Ciclo de Vida (ACV)</h1>
+
+        <form action="/calcular" method="post">
+            
+            <label for="segmento">Segmento do Veículo:</label>
+            <select id="segmento" name="segmento" required>
+                <option value="">-- Selecione o Segmento --</option>
+                <option value="compacto">Compacto</option>
+                <option value="medio">Médio</option>
+                <option value="suv_compacto">SUV Compacto</option>
+            </select>
+
+            <label for="motor">Tipo de Motorização:</label>
+            <select id="motor" name="motor" required>
+                <option value="">-- Selecione primeiro o segmento --</option>
+            </select>
+
+            <label for="combustivel_tipo">Tipo de Combustível (se aplicável):</label>
+            <select id="combustivel_tipo" name="combustivel_tipo">
+                <option value="">-- Selecione --</option>
+                <option value="gasolina_e27">Gasolina E27 (Brasil)</option>
+                <option value="etanol">Etanol</option>
+                <option value="gasolina_e0">Gasolina Pura (E0)</option>
+            </select>
+
+            <label for="bandeira">Bandeira Tarifária (para Elétricos/PHEV):</label>
+            <select id="bandeira" name="bandeira">
+                <option value="">-- Selecione --</option>
+                <option value="verde">Bandeira Verde</option>
+                <option value="amarela">Bandeira Amarela</option>
+                <option value="vermelha_p1">Bandeira Vermelha – Patamar 1</option>
+                <option value="vermelha_p2">Bandeira Vermelha – Patamar 2</option>
+            </select>
+
+            <button type="submit">Calcular Emissão no Ciclo de Vida</button>
+        </form>
+        
+        {% if resultado %}
+            <div class="resultado">
+                {{ resultado | safe }}
+            </div>
+        {% endif %}
+
+        {% if erro %}
+            <div class="erro">
+                {{ erro }}
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        const motorizacoesDisponiveis = {
+            compacto: {
+                'icev_flex': 'ICEV Flex',
+                'bev': 'BEV (100% Elétrico)'
+            },
+            medio: {
+                'icev_flex': 'ICEV Flex',
+                'hev': 'HEV (Híbrido)',
+                'phev': 'PHEV (Híbrido Plug-in)',
+                'bev': 'BEV (100% Elétrico)'
+            },
+            // Removida a opção 'fcev' daqui
+            suv_compacto: {
+                'icev_flex': 'ICEV Flex',
+                'bev': 'BEV (100% Elétrico)'
+            }
+        };
+
+        const segmentoSelect = document.getElementById('segmento');
+        const motorSelect = document.getElementById('motor');
+
+        segmentoSelect.addEventListener('change', function() {
+            const segmentoEscolhido = this.value;
+            motorSelect.innerHTML = '<option value="">-- Selecione a Motorização --</option>';
+            if (segmentoEscolhido && motorizacoesDisponiveis[segmentoEscolhido]) {
+                const motores = motorizacoesDisponiveis[segmentoEscolhido];
+                for (const valor in motores) {
+                    const texto = motores[valor];
+                    const option = new Option(texto, valor);
+                    motorSelect.add(option);
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
