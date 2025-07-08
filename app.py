@@ -32,10 +32,10 @@ FATORES_EMISSAO_USO = {
         'gasolina_e0': 2994.9,
     },
     'eletricidade': {
-        'verde': 40 * 1.1765,
-        'amarela': 65 * 1.1765,
-        'vermelha_p1': 90 * 1.1765,
-        'vermelha_p2': 120 * 1.1765,
+        'verde': 55 * 1.1765,
+        'amarela': 75 * 1.1765,
+        'vermelha_p1': 95 * 1.1765,
+        'vermelha_p2': 125 * 1.1765,
     }
 }
 
@@ -56,11 +56,11 @@ DADOS_CONSUMO = {
     }
 }
 
-FATOR_EMISSAO_BATERIA_POR_KWH = 68 
+FATOR_EMISSAO_BATERIA_POR_KWH = 75 
 TAMANHO_BATERIA_KWH = {
-    'bev': {'compacto': 40, 'medio': 60, 'suv_compacto': 80},
-    'phev': {'medio': 15},
-    'hev': {'medio': 2}
+    'bev': {'compacto': 50, 'medio': 75, 'suv_compacto': 100},
+    'phev': {'medio': 20},
+    'hev': {'medio': 10}
 }
 # --- FIM DA BASE DE DADOS ---
 
