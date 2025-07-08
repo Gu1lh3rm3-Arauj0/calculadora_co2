@@ -28,16 +28,16 @@ DADOS_PRODUCAO_RECICLAGEM = {
 # Adicionada a entrada para 'etanol_2g'
 FATORES_EMISSAO_USO = {
     'combustivel': {
-        'gasolina_e27': 2413.1,
+        'gasolina_e27': 2413.1,  # Gasolina Comum
         'etanol': 839.2,         # Etanol Comum (1G)
-        'etanol_2g': 300.0,        # Etanol de 2ª Geração (Celulósico)
-        'gasolina_e0': 2994.9,
+        'etanol_2g': 300.0,        # Etanol de 2ª Geração
+        'gasolina_e0': 2994.9,    # Gasolina Pura
     },
     'eletricidade': {
-        'verde': 40.3 * (1/0.85),
-        'amarela': 63.6 * (1/0.85),
-        'vermelha_p1': 102.2 * (1/0.85),
-        'vermelha_p2': 650 * (1/0.85),
+        'verde': 55 * (1/0.85),
+        'amarela': 75 * (1/0.85),
+        'vermelha_p1': 95 * (1/0.85),
+        'vermelha_p2': 125 * (1/0.85),
     }
 }
 
@@ -63,7 +63,7 @@ FATOR_EMISSAO_BATERIA_POR_KWH = 75
 TAMANHO_BATERIA_KWH = {
     'bev': {'compacto': 50, 'medio': 75, 'suv_compacto': 100},
     'phev': {'medio': 20},
-    'hev': {'medio': 10}
+    'hev': {'medio': 5}
 }
 # --- FIM DA BASE DE DADOS ---
 
