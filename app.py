@@ -116,7 +116,7 @@ def calcular():
         resultado = (
             f"<h3>Resultado da Análise de Ciclo de Vida (ACV)</h3>"
             f"<h4>Detalhe da Produção e Reciclagem:</h4>"
-            f"<p style='margin-left: 20px;'>Veículo (sem bateria): {emissao_veiculo_sem_bateria_kg:,.0f} kg de CO₂e</p>"
+            f"<p style='margin-left: 20px;'>Veículo: {emissao_veiculo_sem_bateria_kg:,.0f} kg de CO₂e</p>"
             f"<p style='margin-left: 20px;'>Bateria: {emissao_bateria_kg:,.0f} kg de CO₂e</p>"
             f"<p><strong>Subtotal Produção: {emissao_producao_total_kg:,.0f} kg de CO₂e</strong></p>"
             f"<h4>Fase de Uso:</h4>"
