@@ -1,4 +1,4 @@
-# app.py
+# app.py 
 
 from flask import Flask, render_template, request
 
@@ -25,17 +25,19 @@ DADOS_PRODUCAO_RECICLAGEM = {
     }
 }
 
+# Adicionada a entrada para 'etanol_2g'
 FATORES_EMISSAO_USO = {
     'combustivel': {
         'gasolina_e27': 2413.1,
-        'etanol': 839.2,
+        'etanol': 839.2,         # Etanol Comum (1G)
+        'etanol_2g': 300.0,        # Etanol de 2ª Geração (Celulósico)
         'gasolina_e0': 2994.9,
     },
     'eletricidade': {
-        'verde': 55 * 1.1765,
-        'amarela': 75 * 1.1765,
-        'vermelha_p1': 95 * 1.1765,
-        'vermelha_p2': 125 * 1.1765,
+        'verde': 40.3 * (1/0.85),
+        'amarela': 63.6 * (1/0.85),
+        'vermelha_p1': 102.2 * (1/0.85),
+        'vermelha_p2': 650 * (1/0.85),
     }
 }
 
@@ -56,6 +58,7 @@ DADOS_CONSUMO = {
     }
 }
 
+# A sua versão mais recente do código para baterias.
 FATOR_EMISSAO_BATERIA_POR_KWH = 75 
 TAMANHO_BATERIA_KWH = {
     'bev': {'compacto': 50, 'medio': 75, 'suv_compacto': 100},
@@ -81,16 +84,13 @@ def calcular():
         if segmento not in DADOS_PRODUCAO_RECICLAGEM or motor not in DADOS_PRODUCAO_RECICLAGEM[segmento]:
             return render_template('index.html', erro=f"A combinação '{segmento}' e '{motor}' não é válida.")
         
-        # 1. Pega a emissão base do veículo
         emissao_veiculo_sem_bateria_kg = DADOS_PRODUCAO_RECICLAGEM[segmento][motor]
         
-        # 2. Calcula a emissão da bateria separadamente
         emissao_bateria_kg = 0
         if motor in TAMANHO_BATERIA_KWH and segmento in TAMANHO_BATERIA_KWH[motor]:
             tamanho_bateria = TAMANHO_BATERIA_KWH[motor][segmento]
             emissao_bateria_kg = tamanho_bateria * FATOR_EMISSAO_BATERIA_POR_KWH
         
-        # 3. A emissão de produção total é a SOMA das duas partes
         emissao_producao_total_kg = emissao_veiculo_sem_bateria_kg + emissao_bateria_kg
         
         dados_consumo_veiculo = DADOS_CONSUMO[segmento][motor]
@@ -107,14 +107,12 @@ def calcular():
         if consumo_eletrico > 0:
             if not bandeira: return render_template('index.html', erro="Para veículos que usam eletricidade (BEV, PHEV), a bandeira é necessária.")
             consumo_por_km = consumo_eletrico / 100
-            fator_emissao = FATORES_EMISSAO_USO['eletricidade'][bandeira]
-            emissao_uso_total_kg += (consumo_por_km * fator_emissao * VIDA_UTIL_KM) / 1000
+            fator_emissao_eletricidade = FATORES_EMISSAO_USO['eletricidade'][bandeira]
+            emissao_uso_total_kg += (consumo_por_km * fator_emissao_eletricidade * VIDA_UTIL_KM) / 1000
 
-        # CÁLCULO TOTAL DO CICLO DE VIDA
         emissao_total_kg = emissao_producao_total_kg + emissao_uso_total_kg
         emissao_total_toneladas = emissao_total_kg / 1000
 
-        # O formato do resultado continua excelente para mostrar o detalhe
         resultado = (
             f"<h3>Resultado da Análise de Ciclo de Vida (ACV)</h3>"
             f"<h4>Detalhe da Produção e Reciclagem:</h4>"
