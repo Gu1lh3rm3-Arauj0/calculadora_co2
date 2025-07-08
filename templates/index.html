@@ -43,8 +43,8 @@
             <select id="combustivel_tipo" name="combustivel_tipo">
                 <option value="">-- Selecione --</option>
                 <option value="gasolina_e27">Gasolina E27 (Brasil)</option>
-                <option value="etanol">Etanol</option>
-                <option value="gasolina_e0">Gasolina Pura (E0)</option>
+                <option value="etanol">Etanol (1G - Comum)</option>
+                <option value="etanol_2g">Etanol (2G - Celulósico)</option> <option value="gasolina_e0">Gasolina Pura (E0)</option>
             </select>
 
             <label for="bandeira">Bandeira Tarifária (para Elétricos/PHEV):</label>
@@ -73,6 +73,7 @@
     </div>
 
     <script>
+        // O JavaScript não precisa de alterações
         const motorizacoesDisponiveis = {
             compacto: {
                 'icev_flex': 'ICEV Flex',
@@ -84,7 +85,6 @@
                 'phev': 'PHEV (Híbrido Plug-in)',
                 'bev': 'BEV (100% Elétrico)'
             },
-            // Removida a opção 'fcev' daqui
             suv_compacto: {
                 'icev_flex': 'ICEV Flex',
                 'bev': 'BEV (100% Elétrico)'
